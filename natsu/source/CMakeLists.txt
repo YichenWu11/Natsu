@@ -1,0 +1,3 @@
+add_subdirectory(natsu_gfx)
+add_subdirectory(natsu_runtime)
+add_subdirectory(natsu_editor)

@@ -41,11 +41,15 @@ namespace Natsu::GFX {
         ThrowIfFailed(m_device.DxgiFactory()->MakeWindowAssociation(m_window_handle, DXGI_MWA_NO_ALT_ENTER));
         ThrowIfFailed(swapChain.As(&m_SwapChain));
 
-        for (auto render_pass : m_RenderPath)
-            render_pass->PreLoad();
+        {
+            ThrowIfFailed(m_device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&m_fence)));
+            m_fenceValue = 0;
+        }
     }
 
     CommandContext::~CommandContext() {
+        FlushCommandQueue();
+
         m_psoMngr.Shutdown();
         m_frameResourceMngr.Shutdown();
         m_resourceMngr.Shutdown();
@@ -55,19 +59,47 @@ namespace Natsu::GFX {
         m_GraphicsQueue.Shutdown();
     }
 
-    void CommandContext::BeginFrame() {
+    void CommandContext::FlushCommandQueue() {
+        m_fenceValue++;
+
+        ThrowIfFailed(m_GraphicsQueue->Signal(m_fence.Get(), m_fenceValue));
+
+        if (m_fence->GetCompletedValue() < m_fenceValue) {
+            HANDLE eventHandle = CreateEventEx(nullptr, nullptr, false, EVENT_ALL_ACCESS);
+
+            ThrowIfFailed(m_fence->SetEventOnCompletion(m_fenceValue, eventHandle));
+
+            WaitForSingleObject(eventHandle, INFINITE);
+            CloseHandle(eventHandle);
+        }
     }
 
-    void CommandContext::Execute() {
-        for (auto render_pass : m_RenderPath)
-            render_pass->Execute();
+    void CommandContext::PreLoad(const std::vector<RenderPass*>& render_path) {
+        for (auto render_pass : render_path)
+            render_pass->PreLoad();
     }
 
-    void CommandContext::EndFrame() {
+    void CommandContext::Execute(const std::vector<RenderPass*>& render_path) {
+        m_frameResourceMngr.BeginFrame();
+
+        {
+            auto cmdListHandle = m_frameResourceMngr.GetCurrentFrameResource()->Command();
+            for (auto render_pass : render_path)
+                render_pass->Execute(*(m_frameResourceMngr.GetCurrentFrameResource()), m_backBufferIndex);
+        }
+
+        m_frameResourceMngr.Execute(m_GraphicsQueue);
+
+        ThrowIfFailed(m_SwapChain->Present(0, 0));
+        m_frameResourceMngr.EndFrame(m_GraphicsQueue);
+
+        m_backBufferIndex = (m_backBufferIndex + 1) % 3;
     }
 
-    void CommandContext::OnResize() {
-        for (auto render_pass : m_RenderPath)
+    void CommandContext::OnResize(const std::vector<RenderPass*>& render_path) {
+        FlushCommandQueue();
+
+        for (auto render_pass : render_path)
             render_pass->OnResize();
     }
 

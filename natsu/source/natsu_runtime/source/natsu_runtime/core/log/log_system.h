@@ -13,7 +13,7 @@ namespace Natsu::Runtime {
     public:
         LogSystem();
 
-        std::shared_ptr<spdlog::logger>& getLogger() { return s_logger; }
+        std::shared_ptr<spdlog::logger>& GetLogger() { return s_logger; }
 
     private:
         std::shared_ptr<spdlog::logger> s_logger;

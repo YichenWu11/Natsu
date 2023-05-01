@@ -15,7 +15,7 @@ namespace Natsu::GFX {
 
         size_t         GetNumFrame() const noexcept { return frameResources.size(); }
         FrameResource* GetCurrentFrameResource() noexcept;
-        size_t         GetCurrentCpuFence() const noexcept { return cpuFence; };
+        size_t         GetCurrentCpuFence() const noexcept { return cpuFence; }
         size_t         GetCurrentIndex() const noexcept { return (cpuFence % frameResources.size()); }
 
         void BeginFrame();

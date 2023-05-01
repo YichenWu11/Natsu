@@ -3,15 +3,13 @@
 int main() {
     auto engine = new Natsu::Runtime::Engine;
 
-    // Natsu::GFX::CommandContext context(GetActiveWindow(), 100, 100);
+    engine->StartEngine(std::string{});
+    engine->Init();
 
-    engine->startEngine(std::string{});
-    engine->initialize();
+    engine->Run();
 
-    // LOG_INFO("Hello NatsuEditor");
-
-    engine->clear();
-    engine->shutdownEngine();
+    engine->Clear();
+    engine->ShutdownEngine();
 
     delete engine;
 }

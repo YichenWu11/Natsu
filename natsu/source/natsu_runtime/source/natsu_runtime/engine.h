@@ -1,7 +1,8 @@
 #pragma once
 
-#include <filesystem>
-#include <string>
+#include "natsu_runtime/pch.h"
+
+#include "natsu_runtime/core/util/timer.h"
 
 namespace Natsu::Runtime {
     class Engine {
@@ -12,12 +13,15 @@ namespace Natsu::Runtime {
         Engine(const Engine&)            = delete;
         Engine& operator=(const Engine&) = delete;
 
-        void startEngine(const std::string& config_file_path);
-        void shutdownEngine();
+        void StartEngine(const std::string& config_file_path);
+        void ShutdownEngine();
 
-        void initialize();
-        void clear();
+        void Init();
+        void Clear();
+
+        void Run();
 
     private:
+        Util::Timer m_timer;
     };
 } // namespace Natsu::Runtime

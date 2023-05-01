@@ -77,8 +77,8 @@ namespace Natsu::GFX {
 #define ThrowIfFailed(x) \
     { \
         HRESULT      hr__ = (x); \
-        std::wstring wfn  = AnsiToWString(__FILE__); \
-        if (FAILED(hr__)) { throw DxException(hr__, L#x, wfn, __LINE__); } \
+        std::wstring wfn  = Natsu::GFX::AnsiToWString(__FILE__); \
+        if (FAILED(hr__)) { throw Natsu::GFX::DxException(hr__, L#x, wfn, __LINE__); } \
     }
 #endif
 

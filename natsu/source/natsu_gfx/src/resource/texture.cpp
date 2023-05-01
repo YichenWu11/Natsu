@@ -4,7 +4,7 @@
 #include "natsu_gfx/general_desc.h"
 
 namespace Natsu::GFX {
-    float Texture::CLEAR_COLOR[4] = {0.2f, 0.2f, 0.2f, 1.0f};
+    float Texture::CLEAR_COLOR[4] = {0.1f, 0.1f, 0.1f, 1.0f};
 
     Texture::Texture(
         ID3D12Device*         device,

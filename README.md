@@ -1,5 +1,5 @@
-# NatsuEngine
-Natsu is my game engine for learning & research purposes.
+# Natsu
+Natsu is a game engine/rendering framework for learning & research purposes.
 
 ## Reference
 * [https://google.github.io/styleguide/cppguide.html](https://google.github.io/styleguide/cppguide.html)

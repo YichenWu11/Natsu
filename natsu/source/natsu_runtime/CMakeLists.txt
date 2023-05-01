@@ -13,3 +13,4 @@ Module(
 )
 
 target_compile_definitions(Runtime PUBLIC ROOT_DIR=${ROOT_DIR})
+target_precompile_headers(Runtime PUBLIC ${ROOT_DIR}/natsu/source/natsu_runtime/source/natsu_runtime/pch.h)

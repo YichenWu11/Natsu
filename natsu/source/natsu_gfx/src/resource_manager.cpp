@@ -67,9 +67,9 @@ namespace Natsu::GFX {
     }
 
     void ResourceManager::DHReserve() {
-        uint32_t numDSV = 32;
-        uint32_t numRTV = 32;
-        uint32_t numCSU = 128;
+        uint32_t numDSV = 1024;
+        uint32_t numRTV = 1024;
+        uint32_t numCSU = 1024;
 
         CSUDHReserve(numCSU);
         RtvDHReserve(numRTV);
@@ -83,7 +83,7 @@ namespace Natsu::GFX {
                 rtvDHfree.pop_back();
                 rtvDHused.insert(idx);
                 if (!rsrcName.empty())
-                    m_passPubRsrcHanleMap[type][rsrcName] = idx;
+                    m_passPubRsrcHandleMap[type][rsrcName] = idx;
                 return idx;
             } break;
             case DSV: {
@@ -91,7 +91,7 @@ namespace Natsu::GFX {
                 dsvDHfree.pop_back();
                 dsvDHused.insert(idx);
                 if (!rsrcName.empty())
-                    m_passPubRsrcHanleMap[type][rsrcName] = idx;
+                    m_passPubRsrcHandleMap[type][rsrcName] = idx;
                 return idx;
             } break;
             case CSU: {
@@ -99,7 +99,7 @@ namespace Natsu::GFX {
                 csuDHfree.pop_back();
                 csuDHused.insert(idx);
                 if (!rsrcName.empty())
-                    m_passPubRsrcHanleMap[type][rsrcName] = idx;
+                    m_passPubRsrcHandleMap[type][rsrcName] = idx;
                 return idx;
             } break;
         }
@@ -112,45 +112,45 @@ namespace Natsu::GFX {
                 rtvDHfree.push_back(offset);
                 rtvDHused.erase(rtvDHused.find(offset));
                 std::string to_erase;
-                for (auto& ele : m_passPubRsrcHanleMap[type]) {
+                for (auto& ele : m_passPubRsrcHandleMap[type]) {
                     if (ele.second == offset) {
                         to_erase = ele.first;
                         break;
                     }
                 }
                 if (!to_erase.empty()) {
-                    m_passPubRsrcHanleMap[type].erase(
-                        m_passPubRsrcHanleMap[type].find(to_erase));
+                    m_passPubRsrcHandleMap[type].erase(
+                        m_passPubRsrcHandleMap[type].find(to_erase));
                 }
             } break;
             case DSV: {
                 dsvDHfree.push_back(offset);
                 dsvDHused.erase(rtvDHused.find(offset));
                 std::string to_erase;
-                for (auto& ele : m_passPubRsrcHanleMap[type]) {
+                for (auto& ele : m_passPubRsrcHandleMap[type]) {
                     if (ele.second == offset) {
                         to_erase = ele.first;
                         break;
                     }
                 }
                 if (!to_erase.empty()) {
-                    m_passPubRsrcHanleMap[type].erase(
-                        m_passPubRsrcHanleMap[type].find(to_erase));
+                    m_passPubRsrcHandleMap[type].erase(
+                        m_passPubRsrcHandleMap[type].find(to_erase));
                 }
             } break;
             case CSU: {
                 csuDHfree.push_back(offset);
                 csuDHused.erase(rtvDHused.find(offset));
                 std::string to_erase;
-                for (auto& ele : m_passPubRsrcHanleMap[type]) {
+                for (auto& ele : m_passPubRsrcHandleMap[type]) {
                     if (ele.second == offset) {
                         to_erase = ele.first;
                         break;
                     }
                 }
                 if (!to_erase.empty()) {
-                    m_passPubRsrcHanleMap[type].erase(
-                        m_passPubRsrcHanleMap[type].find(to_erase));
+                    m_passPubRsrcHandleMap[type].erase(
+                        m_passPubRsrcHandleMap[type].find(to_erase));
                 }
             } break;
         }

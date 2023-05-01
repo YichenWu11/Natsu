@@ -5,6 +5,8 @@ bin/
 lib/
 .xmake/
 
+log
+
 imgui.ini
 
 .vscode/
